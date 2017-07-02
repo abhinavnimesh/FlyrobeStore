@@ -1,6 +1,7 @@
 package com.animator_abhi.flyrobestore;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +34,25 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
     String message;
     private String phoneNo;
     VolleyWebserviceResponseListener listener=LoginActivity.this;
+     SmsVerifyCatcher smsVerifyCatcher;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
+            @Override
+            public void onSmsCatch(String message) {
+                Toast.makeText(getApplication(),message,Toast.LENGTH_SHORT).show();
+                String otpr = message.substring(0, 5);
+                Log.d("msg1", otpr);
+                otp.setText(otpr);
+                // String code = parseCode(message);//Parse verification code
+                // etCode.setText(code);//set code in edit text
+                //then you can send verification code to server
+            }
+        });
+
+    }
 
     @Override
     protected int getLayoutId() {
@@ -54,6 +73,11 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
 
     @Override
     protected void initData() {
+
+
+
+
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +142,7 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
             }
         });
 
+
     }
 
     @Override
@@ -143,6 +168,27 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        smsVerifyCatcher.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        smsVerifyCatcher.onStop();
+    }
+
+    /**
+     * need for Android 6 real time permissions
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 

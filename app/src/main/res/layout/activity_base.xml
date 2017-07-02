@@ -56,7 +56,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:clickable="true"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@color/theme_background"
         android:orientation="vertical">
 
@@ -67,7 +67,7 @@
             android:layout_margin="@dimen/margin_regular"
             android:scaleType="centerInside"
             android:layout_gravity="center"
-            android:src="@drawable/no_internet" />
+            android:src="@drawable/error_small_lightblue" />
 
         <TextView
             android:id="@+id/no_connection_title"

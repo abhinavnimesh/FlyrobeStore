@@ -27,6 +27,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.animator_abhi.flyrobestore.utils.NetworkConnectivityListener;
 import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
@@ -42,10 +43,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Menu mMenu;
     private ViewGroup view_noInternet;
     private NetworkConnectivityListener mNetworkConnectivityListener;
-
+    private  Button mNoConnectionButton;
     Dialog myDialog;
     Toolbar toolbar;
-    SmsVerifyCatcher smsVerifyCatcher;
+   // SmsVerifyCatcher smsVerifyCatcher;
     private final int REQUEST_PERMISSION = 1;
     public String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -61,6 +62,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
         mNetworkConnectivityListener = new NetworkConnectivityListener();
         mNetworkConnectivityListener.startListening(this);
+    /*    smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
+            @Override
+            public void onSmsCatch(String message) {
+                Toast.makeText(getApplication(),message,Toast.LENGTH_SHORT).show();
+                String otpr = message.substring(0, 5);
+                Log.d("msg1", otpr);
+                // String code = parseCode(message);//Parse verification code
+                // etCode.setText(code);//set code in edit text
+                //then you can send verification code to server
+            }
+        });*/
 
     }
     @Override
@@ -80,11 +92,31 @@ public abstract class BaseActivity extends AppCompatActivity {
                 mContentContainer.setVisibility(View.GONE);
             }
         }
+        mNoConnectionButton = (Button) findViewById(R.id.no_connection_button);
 
         // No Internet View
         view_noInternet = (ViewGroup) findViewById(R.id.view_no_connection);
         myDialog = new Dialog(this);
 
+        mNoConnectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               /* startActivity(new Intent(BaseActivity.this, WardrobeNewDesign.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));*/
+
+
+                startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+
+
+              /*  finish();
+                if (setRefreshViewIntent != null) {
+                    startActivity(setRefreshViewIntent);
+                }*/
+
+
+            }
+        });
 
         //init SmsVerifyCatcher
 
@@ -164,11 +196,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+   //     smsVerifyCatcher.onStart();
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+     //   smsVerifyCatcher.onStop();
+
 
     }
     @Override
@@ -207,13 +243,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-
+/*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
         addPermission();
-    }
+    }*/
 
     public void addPermission() {
         int permission = ActivityCompat.checkSelfPermission(BaseActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
