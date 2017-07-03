@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "4473591768",
+    "firebase_url": "https://flyrobe-b38bd.firebaseio.com",
+    "project_id": "flyrobe-b38bd",
+    "storage_bucket": "flyrobe-b38bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4473591768:android:87d782dec5650080",
+        "android_client_info": {
+          "package_name": "com.animator_abhi.flyrobestore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "4473591768-2446kh0v1iphn1lkbgvqdp6gh9091fm3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.animator_abhi.flyrobestore",
+            "certificate_hash": "36617bed5deba6f7bd2679b75b1b87be22619a68"
+          }
+        },
+        {
+          "client_id": "4473591768-4kev65ai43k9g4dociit8vkf7v7i7not.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4ImVGb_0GF0E3borVnxeQ0SIRaLHwRkE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "4473591768-4kev65ai43k9g4dociit8vkf7v7i7not.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

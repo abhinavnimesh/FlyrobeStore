@@ -35,6 +35,16 @@ public class PrefUtils {
         editor.apply();
     }
 
+    public static void saveHashList(Context context, List<String> arrayList, String key) {
+        SharedPreferences preferences = getSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        //Set the values
+        Set<String> set = new HashSet<>();
+        set.addAll(arrayList);
+        editor.putStringSet(key, set);
+        editor.commit();
+    }
+
     public static void saveArrayList(Context context, List<String> arrayList, String key) {
         SharedPreferences preferences = getSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();

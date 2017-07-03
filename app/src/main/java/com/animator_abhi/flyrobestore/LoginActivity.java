@@ -12,11 +12,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.animator_abhi.flyrobestore.Model.UserModel;
 import com.animator_abhi.flyrobestore.Volley.VolleyWebservicePostJson;
 import com.animator_abhi.flyrobestore.Volley.VolleyWebserviceResponseListener;
 import com.animator_abhi.flyrobestore.utils.ApiUtils;
 import com.animator_abhi.flyrobestore.utils.Constants;
+import com.animator_abhi.flyrobestore.utils.Prefs;
 import com.animator_abhi.flyrobestore.utils.SharedPrefUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.JsonSyntaxException;
 import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
 import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
@@ -30,6 +37,9 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
    // TextInputLayout otp;
     EditText userId,otp;
     int otpCode;
+    private FirebaseDatabase database;
+    Boolean isUserExist=false;
+
     TextView phone;
     String message;
     private String phoneNo;
@@ -39,6 +49,8 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        database = FirebaseDatabase.getInstance();
+        final DatabaseReference firebase = database.getReference().child("users");
         smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
             @Override
             public void onSmsCatch(String message) {
@@ -82,7 +94,7 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
             @Override
             public void onClick(View v) {
                 if (otp.getText().toString().equals("")) {
-                    showMsgDialog("Warning!", "OTP Cannot Be Empty", R.drawable.button, 0);
+                    showMsgDialog("Warning!", "OTP Cannot Be Empty", R.drawable.error_small, 0);
                 }
                 else{
                     int i=SharedPrefUtils.getInt(getApplication(), Constants.OTP);
@@ -97,7 +109,7 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
                         finish();
                     }
                     else{
-                        showMsgDialog("Warning!", "Please Enter Correct OTP.", R.drawable.flyrobe, 0);
+                        showMsgDialog("Warning!", "Please Enter Correct OTP.", R.drawable.error_small, 0);
                     }
                 }}
         });
@@ -105,11 +117,19 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (userId.getText().toString().equals("")) {
+                    showMsgDialog("Warning!", "User ID Cannot Be Empty", R.drawable.error_small, 0);
+                }
+                else
+
+
+                if (checkUser(userId.getText().toString())){
+                    userId.setVisibility(View.GONE);
                 otp.setVisibility(View.VISIBLE);
                 submit.setVisibility(View.VISIBLE);
                 signIn.setVisibility(View.INVISIBLE);
                 signUp.setVisibility(View.GONE);
-                userId.setVisibility(View.GONE);
+
                 // phone.setText(phoneNo);
                 otpCode = (int) ((Math.random() * (99999 - 10000)) + 10000);
                 Log.d(TAG,""+otpCode);
@@ -119,7 +139,7 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
 
                 try {
                     jsonObject.put("message", message);
-                    jsonObject.put("send_to", "8750934760");
+                    jsonObject.put("send_to", userId.getText().toString());
                     jsonObject.put("gateway", 2);
 
                 } catch (JSONException e) {
@@ -133,6 +153,12 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
 
 
             }
+            else
+                {
+                    Log.d("else",""+isUserExist);
+
+                }
+            }
         });
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +169,46 @@ public class LoginActivity extends BaseActivity implements VolleyWebserviceRespo
         });
 
 
+    }
+
+    private boolean checkUser(String number) {
+
+        final DatabaseReference firebase = database.getReference().child("users").child(number);
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    isUserExist=true;
+                    try {
+
+                      /*  UserModel userModel=dataSnapshot.getValue(UserModel.class);
+                        // Map<String, String> hashMap = snapshot.getValue(HashMap.class);
+                        Prefs.setUserId(getApplication(), userModel.getUserId());
+                        Prefs.setUSERNAME(getApplication(), userModel.getName());
+                        Prefs.setMobile(getApplication(), userModel.getMob());
+                        Prefs.setCity(getApplication(), userModel.getCity());
+                        Prefs.setStoreid(getApplication(), userModel.getStoreId());
+                        Prefs.setEmail(getApplication(), userModel.getEmailId());*/
+
+
+                    } catch (Exception e) {
+
+                    }
+                }
+                else {
+                    isUserExist=false;
+                    showMsgDialog("Warning!", "User Does not Exist", R.drawable.error_small, 0);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                isUserExist=false;
+
+            }
+        });
+Log.d("user",""+isUserExist);
+        return isUserExist;
     }
 
     @Override

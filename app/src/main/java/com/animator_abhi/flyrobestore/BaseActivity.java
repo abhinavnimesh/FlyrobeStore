@@ -142,6 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         final TextView tvMsg = (TextView) myDialog.findViewById(R.id.db_msg);
         final TextView tvTitle = (TextView) myDialog.findViewById(R.id.db_title);
         ImageView ivImg = (ImageView) myDialog.findViewById(R.id.ivImg);
+        ivImg.setImageResource(img);
         tvTitle.setText(title);
         tvMsg.setText(msg);
 
