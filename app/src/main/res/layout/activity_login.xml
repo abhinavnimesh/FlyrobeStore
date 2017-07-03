@@ -109,7 +109,7 @@
             android:drawableStart="@mipmap/ic_lock_outline_white_24dp"
             android:hint="Enter OTP"
             android:inputType="number"
-            android:maxLength="5"
+            android:maxLength="6"
             android:textColor="@color/colorADD"
             tools:ignore="RtlHardcoded" />
     </android.support.design.widget.TextInputLayout>
@@ -138,7 +138,7 @@
             android:drawableLeft="@mipmap/ic_mail_outline_white_24dp"
             android:drawablePadding="10dp"
             android:inputType="textCapWords"
-            android:hint="User Id"
+            android:hint="Enter Mobile No."
             android:textColor="@color/colorADD"
             tools:ignore="RtlHardcoded,TextFields" />
 

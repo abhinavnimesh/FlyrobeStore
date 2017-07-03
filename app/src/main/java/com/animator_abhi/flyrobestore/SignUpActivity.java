@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.animator_abhi.flyrobestore.Model.UserModel;
 import com.animator_abhi.flyrobestore.utils.Prefs;
@@ -30,6 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
+import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
 
 
 import java.util.HashMap;
@@ -43,6 +46,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     String[] warehouse=new String[]{"Store1","Store2","Store3","Store4","Store5",};
     private FirebaseDatabase database;
     FirebaseAuth mAuth;
+    SmsVerifyCatcher smsVerifyCatcher;
+
     String currentUser;
    Button signUp;
     Button verify;
@@ -58,7 +63,18 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         database = FirebaseDatabase.getInstance();
-
+        smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
+            @Override
+            public void onSmsCatch(String message) {
+                Toast.makeText(getApplication(),message,Toast.LENGTH_SHORT).show();
+                String otpr = message.substring(0, 6);
+                Log.d("msg1", otpr);
+                mVerificationField.setText(otpr);
+                // String code = parseCode(message);//Parse verification code
+                // etCode.setText(code);//set code in edit text
+                //then you can send verification code to server
+            }
+        });
 
     }
 
@@ -148,7 +164,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
                 Log.d(TAG, "onCodeSent:" + verificationId);
-
+                userMob.setEnabled(false);
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
                 mResendToken = token;
@@ -336,6 +352,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                             currentUser=userMob.getText().toString();
                             final DatabaseReference firebase = database.getReference().child("users").child(currentUser);
                             // Sign in success, update UI with the signed-in user's information
+
                             Log.d("signup", "signInWithCredential:success");
                              showMsgDialog("Sign Up Completed","You can Login",R.drawable.success,1);
                             UserModel userModel = new UserModel( userId.getText().toString(),userMob.getText().toString(), userName.getText().toString(),userEmail.getText().toString(), citySpinner.getSelectedItem().toString(), storeIdSpinner.getSelectedItem().toString());
@@ -362,4 +379,11 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                     }
                 });
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
 }
