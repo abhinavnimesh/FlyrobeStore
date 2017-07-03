@@ -432,6 +432,9 @@ private boolean validatePhoneNumber() {
                             // startActivity(in);
                             //   finish();
                             // ...
+                            Intent in=new Intent(getApplication(),HomeActivity.class);
+                            startActivity(in);
+                             finish();
 
                         } else {
                             // Sign in failed, display a message and update the UI

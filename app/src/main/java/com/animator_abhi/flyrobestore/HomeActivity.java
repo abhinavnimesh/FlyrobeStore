@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.animator_abhi.flyrobestore.bluetooth.AndroidBluetooth;
+import com.animator_abhi.flyrobestore.bluetooth.MainBluetoothActivity;
+
 import java.util.Set;
 
 public class HomeActivity extends BaseActivity {
@@ -39,17 +42,8 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 setBluetooth(true);
-                Set<BluetoothDevice> pairedDevices =    mbluetoothAdapter.getDefaultAdapter().getBondedDevices();
-// If there are paired devices
-                if (pairedDevices.size() > 0) {
-                    // Loop through paired devices
-                    for (BluetoothDevice device : pairedDevices) {
-                        Log.d("devices",device.getName() + "    " + device.getAddress());
-                        // Add the name and address to an array adapter to show in a ListView
-                      //  mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                    }
-                }
-                Intent i=new Intent(getApplication(),MainActivity.class);
+
+                Intent i=new Intent(getApplication(),MainBluetoothActivity.class);
                 startActivity(i);
             }
         });

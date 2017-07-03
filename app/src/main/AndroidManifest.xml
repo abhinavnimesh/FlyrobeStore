@@ -6,9 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:name=".Volley.AppController"
@@ -23,23 +22,25 @@
             android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/Theme.Transparent"></activity>
+        <activity
+            android:name=".HomeActivity"
             android:theme="@style/Theme.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-        </activity>
-        <activity
-            android:name=".HomeActivity"
-            android:theme="@style/Theme.Transparent" >
-
         </activity>
         <activity
             android:name=".SignUpActivity"
             android:theme="@style/Theme.Transparent" />
-
+        <activity android:name=".BluetoothActivity" />
+        <activity android:name=".bluetooth.MainBluetoothActivity"
+            android:theme="@style/NoTitleDialog"/>
+        <activity android:name=".bluetooth.DeviceListActivity"
+            android:theme="@style/NoTitleDialog"/>
+        <activity android:name=".bluetooth.AndroidBluetooth"></activity>
     </application>
 
 </manifest>

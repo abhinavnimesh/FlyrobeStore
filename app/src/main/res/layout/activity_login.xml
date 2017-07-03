@@ -137,7 +137,8 @@
             android:backgroundTint="@color/colorADD"
             android:drawableLeft="@mipmap/ic_mail_outline_white_24dp"
             android:drawablePadding="10dp"
-            android:inputType="textCapWords"
+            android:inputType="number"
+            android:maxLength="10"
             android:hint="Enter Mobile No."
             android:textColor="@color/colorADD"
             tools:ignore="RtlHardcoded,TextFields" />
