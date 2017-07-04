@@ -58,6 +58,7 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
     int otpCode;
     private FirebaseDatabase database;
     Boolean isUserExist=false;
+    Boolean isUserLoggedIn=false;
     FirebaseAuth mAuth;
     TextInputLayout tInputLayout;
     TextView phone;
@@ -181,6 +182,15 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
 
     @Override
     protected void initData() {
+        isUserLoggedIn=Prefs.getLoginStatus(this);
+
+        if (isUserLoggedIn)
+        {
+            Intent i=new Intent(this,HomeActivity.class);
+            startActivity(i);
+            finish();
+            return;
+        }
 
 
 
@@ -423,6 +433,8 @@ private boolean validatePhoneNumber() {
                             // Sign in success, update UI with the signed-in user's information
                             Prefs.setMobile(getApplication(), userId.getText().toString());
                             Log.d("signup", "signInWithCredential:success");
+                            isUserLoggedIn=true;
+                            Prefs.setLoginStatus(LoginActivity.this,isUserLoggedIn);
                             //showMsgDialog("Sign Up Completed","You can Login",R.drawable.success,1);
                          /*   UserModel userModel = new UserModel( userId.getText().toString(),userMob.getText().toString(), userName.getText().toString(),userEmail.getText().toString(), citySpinner.getSelectedItem().toString(), storeIdSpinner.getSelectedItem().toString());
                             firebase.setValue(userModel);

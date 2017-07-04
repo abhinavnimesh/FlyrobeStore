@@ -21,7 +21,6 @@ public class Constants {
     public static final String PREF_SORT = "pref_sort";
 
 
-
     public static WisePadController.ORIENTATION mOrientation = WisePadController.ORIENTATION.PORTRAIT;
 
 

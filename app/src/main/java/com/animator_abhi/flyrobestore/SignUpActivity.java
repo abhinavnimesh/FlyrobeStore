@@ -55,6 +55,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     Spinner citySpinner,storeIdSpinner;
     EditText userId,userName,userMob,userEmail;
     private boolean mVerificationInProgress = false;
+    private boolean isUserLoggedIn=false;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -352,7 +353,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                             currentUser=userMob.getText().toString();
                             final DatabaseReference firebase = database.getReference().child("users").child(currentUser);
                             // Sign in success, update UI with the signed-in user's information
-
+                            isUserLoggedIn=true;
                             Log.d("signup", "signInWithCredential:success");
                              showMsgDialog("Sign Up Completed","You can Login",R.drawable.success,1);
                             UserModel userModel = new UserModel( userId.getText().toString(),userMob.getText().toString(), userName.getText().toString(),userEmail.getText().toString(), citySpinner.getSelectedItem().toString(), storeIdSpinner.getSelectedItem().toString());
@@ -363,8 +364,41 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                             Prefs.setCity(getApplication(), userModel.getCity());
                             Prefs.setStoreid(getApplication(), userModel.getStoreId());
                             Prefs.setEmail(getApplication(), userModel.getEmailId());
-
+                            Prefs.setLoginStatus(SignUpActivity.this,isUserLoggedIn);
                             FirebaseUser user = task.getResult().getUser();
+                            final DatabaseReference firebaseCred = database.getReference().child("cred");
+                            firebaseCred.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.getValue()!=null)
+                                    {
+
+
+                                         /*   Map<String, String> hashMap = dataSnapshot.getValue(HashMap.class);
+                                            Prefs.setMasterId(getApplication(),getValuesWithValid(hashMap, "userName") );
+                                            Prefs.setMasterPass(getApplication(), getValuesWithValid(hashMap, "pass"));*/
+                                        Prefs.setMasterId(getApplication(), (String) dataSnapshot.child("userName").getValue());
+                                        Prefs.setMasterPass(getApplication(), (String) dataSnapshot.child("pass").getValue());
+                                        //   Toast.makeText(LoginActivity.this,"username"+(String) dataSnapshot.child("userName").getValue(),Toast.LENGTH_SHORT).show();
+
+                                        //    Toast.makeText(getApplication(),""+getValuesWithValid(hashMap, "userName")+ getValuesWithValid(hashMap, "pass"),Toast.LENGTH_SHORT).show();
+                                        //  Log.d("cred from firebase",""+getValuesWithValid(hashMap, "userName")+ getValuesWithValid(hashMap, "pass"));
+
+                                    }
+                                    else{
+                                        // Toast.makeText(getApplication(),"no data found",Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    //  Toast.makeText(getApplication(),"error while access",Toast.LENGTH_SHORT).show();
+
+
+                                }
+                            });
                             Intent in=new Intent(getApplication(),HomeActivity.class);
                            // startActivity(in);
                          //   finish();

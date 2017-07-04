@@ -21,6 +21,9 @@ public class Prefs {
     private static final String EMAIL = "email";
     private static final String MasterId = "masterId";
     private static final String MasterPass = "masterPass";
+    private static final String LoggedIn="loggedIn";
+
+
 
 
 
@@ -41,6 +44,14 @@ public class Prefs {
     }
 */
 
+    @NonNull
+    public static Boolean getLoginStatus(Context context) {
+        return getPrefs(context).getBoolean(LoggedIn,false);
+    }
+
+    public static void setLoginStatus(Context context, boolean value) {
+       getPrefs(context).edit().putBoolean(LoggedIn,value).commit();
+    }
 
     @NonNull
     public static String getMasterId(Context context) {
