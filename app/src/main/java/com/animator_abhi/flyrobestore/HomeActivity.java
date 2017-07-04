@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.animator_abhi.flyrobestore.bluetooth.AndroidBluetooth;
 import com.animator_abhi.flyrobestore.bluetooth.MainBluetoothActivity;
+import com.animator_abhi.flyrobestore.utils.Prefs;
 
 import java.util.Set;
 
@@ -45,6 +46,7 @@ public class HomeActivity extends BaseActivity {
 int flg=i.getIntExtra("flag",0);
         if (flg==1){
             Toast.makeText(getApplication(),"Payment Successful",Toast.LENGTH_SHORT).show();}
+      //  Toast.makeText(getApplication(),"creds"+ Prefs.getMasterId(getApplicationContext()),Toast.LENGTH_SHORT).show();
         findViewById(R.id.card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

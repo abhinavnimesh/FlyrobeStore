@@ -19,6 +19,9 @@ public class Prefs {
     private static final String STOREID = "storeId";
     private static final String CITY = "city";
     private static final String EMAIL = "email";
+    private static final String MasterId = "masterId";
+    private static final String MasterPass = "masterPass";
+
 
 
 
@@ -37,6 +40,26 @@ public class Prefs {
         getPrefs(context).edit().putBoolean(IS_PERSISTENCE, value).commit();
     }
 */
+
+
+    @NonNull
+    public static String getMasterId(Context context) {
+        return getPrefs(context).getString(MasterId, "");
+    }
+
+    public static void setMasterId(Context context, String value) {
+        getPrefs(context).edit().putString(MasterId, value).commit();
+    }
+
+    @NonNull
+    public static String getMasterPass(Context context) {
+        return getPrefs(context).getString(MasterPass, "");
+    }
+
+    public static void setMasterPass(Context context, String value) {
+        getPrefs(context).edit().putString(MasterPass, value).commit();
+    }
+
 
     @NonNull
     public static String getEmail(Context context) {

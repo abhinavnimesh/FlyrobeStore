@@ -42,6 +42,8 @@ import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends BaseActivity implements /*VolleyWebserviceResponseListener ,*/View.OnClickListener {
@@ -436,9 +438,43 @@ private boolean validatePhoneNumber() {
                             // startActivity(in);
                             //   finish();
                             // ...
+                            final DatabaseReference firebaseCred = database.getReference().child("cred");
+                            firebaseCred.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.getValue()!=null)
+                                    {
+
+
+                                         /*   Map<String, String> hashMap = dataSnapshot.getValue(HashMap.class);
+                                            Prefs.setMasterId(getApplication(),getValuesWithValid(hashMap, "userName") );
+                                            Prefs.setMasterPass(getApplication(), getValuesWithValid(hashMap, "pass"));*/
+                                           Prefs.setMasterId(getApplication(), (String) dataSnapshot.child("userName").getValue());
+                                            Prefs.setMasterPass(getApplication(), (String) dataSnapshot.child("pass").getValue());
+                                    //   Toast.makeText(LoginActivity.this,"username"+(String) dataSnapshot.child("userName").getValue(),Toast.LENGTH_SHORT).show();
+
+                                      //    Toast.makeText(getApplication(),""+getValuesWithValid(hashMap, "userName")+ getValuesWithValid(hashMap, "pass"),Toast.LENGTH_SHORT).show();
+                                      //  Log.d("cred from firebase",""+getValuesWithValid(hashMap, "userName")+ getValuesWithValid(hashMap, "pass"));
+
+                                    }
+                                    else{
+                                       // Toast.makeText(getApplication(),"no data found",Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                  //  Toast.makeText(getApplication(),"error while access",Toast.LENGTH_SHORT).show();
+
+
+                                }
+                            });
+
                             Intent in=new Intent(getApplication(),HomeActivity.class);
-                            startActivity(in);
-                             finish();
+                         startActivity(in);
+                           finish();
 
                         } else {
                             // Sign in failed, display a message and update the UI
@@ -450,4 +486,12 @@ private boolean validatePhoneNumber() {
                     }
                 });
     }
+
+   /* private String getValuesWithValid(Map<String, String> hashMap, String displayName) {
+        if (hashMap.containsKey("" + displayName) && hashMap.get("" + displayName).length() > 0) {
+            return hashMap.get("" + displayName) + "";
+        } else {
+            return "";
+        }
+    }*/
 }

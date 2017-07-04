@@ -67,8 +67,8 @@ public class MainActivity extends BaseActivity {
                 receipt=edtReceipt.getText().toString();
                 email=edtEmail.getText().toString();
                 notes=edtNotes.getText().toString();
-                mSwipeId="9984169949";
-                mSwipePassword="008890";
+                mSwipeId=Prefs.getMasterId(getApplication());
+                mSwipePassword=Prefs.getMasterPass(getApplication());
 
 
                // firebase.push().setValue(transactionModel);
