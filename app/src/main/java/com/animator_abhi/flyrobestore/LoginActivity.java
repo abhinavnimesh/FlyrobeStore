@@ -273,8 +273,10 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
                     isUserExist=true;
+                   // showMsgDialog("Warning!", "User Does Exist", R.drawable.error_small, 0);
                     try {
-
+                        isUserExist=true;
+                        startPhoneNumberVerification(userId.getText().toString());
                       /*  UserModel userModel=dataSnapshot.getValue(UserModel.class);
                         // Map<String, String> hashMap = snapshot.getValue(HashMap.class);
                         Prefs.setUserId(getApplication(), userModel.getUserId());
@@ -286,6 +288,7 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
 
 
                     } catch (Exception e) {
+                        isUserExist=true;
 
                     }
                 }
@@ -298,6 +301,7 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 isUserExist=false;
+                showMsgDialog("Warning!", "cancel", R.drawable.error_small, 0);
 
             }
         });
@@ -326,7 +330,7 @@ Log.d("user",""+isUserExist);
     }*/
 private boolean validatePhoneNumber() {
     if (userId.getText().toString().equals("")) {
-        showMsgDialog("Warning!", "Fields cannot Be Empty", R.drawable.button, 0);
+        showMsgDialog("Warning!", "Fields cannot Be Empty", R.drawable.error_small, 0);
         return false;
     }
     return true;
@@ -341,9 +345,9 @@ private boolean validatePhoneNumber() {
                     return;
                 }
 
-                if(checkUser(userId.getText().toString()))
+               checkUser(userId.getText().toString());
 
-                {  startPhoneNumberVerification(userId.getText().toString());}
+
                 break;
             case R.id.submit:
                 String code = otp.getText().toString();

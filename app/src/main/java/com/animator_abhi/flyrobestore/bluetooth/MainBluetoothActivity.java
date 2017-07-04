@@ -217,10 +217,13 @@ public class MainBluetoothActivity extends Activity {
 				startActivity(newIntent);
 	        } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 	        	BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                if (device.getName().substring(0,2).equals("WP")) {
+                    mHashDeviceList.add(device);
+                    //mDeviceList.add(device);
+                }
                 mHashDeviceList.add(device);
-	        	//mDeviceList.add(device);
-
-				Log.d("devices","Found device " + device.getName());
+                Toast.makeText(getApplication(),""+device.getName().substring(0,2),Toast.LENGTH_SHORT).show();
+                Log.d("devices","Found device " + device.getName());
 	        }
 	    }
 	};
