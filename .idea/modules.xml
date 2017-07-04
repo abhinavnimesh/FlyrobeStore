@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FlyrobeStore.iml" filepath="$PROJECT_DIR$/FlyrobeStore.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mswipewisepadapkkit/mswipewisepadapkkit.iml" filepath="$PROJECT_DIR$/mswipewisepadapkkit/mswipewisepadapkkit.iml" />
     </modules>
   </component>
 </project>

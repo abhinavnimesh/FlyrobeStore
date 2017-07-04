@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.animator_abhi.flyrobestore.bluetooth.AndroidBluetooth;
 import com.animator_abhi.flyrobestore.bluetooth.MainBluetoothActivity;
@@ -15,9 +16,13 @@ import java.util.Set;
 
 public class HomeActivity extends BaseActivity {
     BluetoothAdapter mbluetoothAdapter;
+    Intent i;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
     }
 
@@ -36,14 +41,16 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
-
+        i=getIntent();
+int flg=i.getIntExtra("flag",0);
+        if (flg==1){
+            Toast.makeText(getApplication(),"Payment Successful",Toast.LENGTH_SHORT).show();}
         findViewById(R.id.card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setBluetooth(true);
 
-                Intent i=new Intent(getApplication(),MainBluetoothActivity.class);
+                Intent i=new Intent(getApplication(),MainActivity.class);
                 startActivity(i);
             }
         });

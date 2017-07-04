@@ -1,5 +1,17 @@
 package com.animator_abhi.flyrobestore.utils;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.animator_abhi.flyrobestore.DoneActivity;
+import com.animator_abhi.flyrobestore.R;
+import com.mswipe.wisepad.apkkit.WisePadController;
+
 /**
  * Created by monisha on 31/03/16.
  */
@@ -7,6 +19,141 @@ public class Constants {
 
     public static final String HOME = "Home";
     public static final String PREF_SORT = "pref_sort";
+
+
+
+    public static WisePadController.ORIENTATION mOrientation = WisePadController.ORIENTATION.PORTRAIT;
+
+
+
+    public static final boolean isSignatureRequired = false;
+
+    public static final boolean isProduction = false;/*!BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug");*/
+
+    public static final boolean isSPrinterSupported = false;
+
+    public static final boolean isPrintSignatureOnReceipt = false;
+
+
+    public final static boolean IS_DEBUGGING_ON = true;
+    public static final String CARDSALE_DIALOG_MSG = "Card Sale";
+
+
+
+
+    public static void mshowDialog(Context context, String title, String msg,
+                                  int type) {
+        String stType = "";
+        if (type == 1) {
+            stType = "3";
+        } else if (type == 2) {
+            stType = "2";
+        } else if (type == 4) {
+            stType = "4";
+        }
+        Dialog dialog = mshowDialog(context, title, msg, stType, "Ok", "Cancel", "");
+        dialog.show();
+
+    }
+
+    public static Dialog mshowDialog(Context context, String title, String msg,
+                                    String type) {
+
+        return mshowDialog(context, title, msg, type, "Ok", "Cancel", "");
+
+    }
+
+    public static void mshowDialog(Context context, String title, String msg,
+                                  int type, String proformaId) {
+        String stType = "";
+        if (type == 4) {
+            stType = "4";
+        }
+        Dialog dialog = mshowDialog(context, title, msg, stType, "Ok", "Cancel", proformaId);
+        dialog.show();
+    }
+
+
+    public static Dialog mshowDialog(final Context context, String title, String msg,
+                                    String type, String firstBtnText, String secondBtnText, final String proformaId) {
+        // new AlertDialogMsg(LoginView.this,
+        // "Please enter valid User Id and Password", "Login").show();
+        final Dialog dialog = new Dialog(context, R.style.styleCustDlg);
+        dialog.setContentView(R.layout.customdlg);
+        dialog.setCanceledOnTouchOutside(false);
+
+        dialog.setCancelable(true);
+
+        // ApplicationData applicationData = (ApplicationData) context.getApplicationContext();
+
+        // set the title
+        TextView txttitle = (TextView) dialog.findViewById(R.id.tvmessagedialogtitle);
+        txttitle.setText(title);
+        //txttitle.setTypeface(applicationData.fontbold);
+
+
+        // to set the message
+        TextView message = (TextView) dialog.findViewById(R.id.tvmessagedialogtext);
+        message.setText(msg);
+        //   message.setTypeface(applicationData.font);
+
+        Button yes = (Button) dialog.findViewById(R.id.bmessageDialogYes);
+        yes.setText(firstBtnText);
+        //   yes.setTypeface(applicationData.font);
+
+        Button no = (Button) dialog.findViewById(R.id.bmessageDialogNo);
+        no.setText(secondBtnText);
+        // no.setTypeface(applicationData.font);
+        if (type.equalsIgnoreCase("1")) {
+            no.setVisibility(View.GONE);
+        } else if (type.equalsIgnoreCase("3")) {
+            no.setVisibility(View.GONE);
+            yes.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    dialog.dismiss();
+
+                }
+            });
+
+        } else if (type.equalsIgnoreCase("2")) {
+            no.setVisibility(View.GONE);
+            yes.setVisibility(View.VISIBLE);
+            yes.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    ((Activity) context).finish();
+                    dialog.dismiss();
+
+                }
+            });
+        } else if (type.equalsIgnoreCase("4")) {
+            no.setVisibility(View.GONE);
+            yes.setVisibility(View.VISIBLE);
+            yes.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+
+                    updatePaymentStatus(dialog, context, proformaId);
+
+                }
+            });
+        }
+
+        dialog.show();
+        return dialog;
+
+    }
+
+    public final static String STATUS_MODE = "status_mode";
+    public static void updatePaymentStatus(Dialog dialog, Context context, String proformaId) {
+        Intent intent = new Intent(((Activity) context), DoneActivity.class);
+        intent.putExtra(Constants.PROFORMA_ID, proformaId);
+        intent.putExtra(Constants.STATUS_MODE, "DEL");
+        ((Activity) context).startActivity(intent);
+        ((Activity) context).finish();
+        dialog.dismiss();
+    }
 
     //--- Sorting Constants---
     public static final int SORT_PRICE_LH = 0;

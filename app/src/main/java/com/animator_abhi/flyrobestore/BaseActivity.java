@@ -1,6 +1,7 @@
 package com.animator_abhi.flyrobestore;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,10 +31,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.animator_abhi.flyrobestore.utils.NetworkConnectivityListener;
+import com.mswipe.wisepad.apkkit.WisePadController;
+import com.mswipe.wisepad.apkkit.WisePadControllerListener;
 import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
 import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity  implements WisePadControllerListener {
     public ViewGroup mContentContainer;
     public TextView mTitleTextView;
     public ViewGroup mFrameHeader;
@@ -46,6 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private  Button mNoConnectionButton;
     Dialog myDialog;
     Toolbar toolbar;
+    WisePadController mWisePadController;
    // SmsVerifyCatcher smsVerifyCatcher;
     private final int REQUEST_PERMISSION = 1;
     public String[] PERMISSIONS_STORAGE = {
@@ -55,6 +59,24 @@ public abstract class BaseActivity extends AppCompatActivity {
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
+    @Override
+    public void onError(String error, int errorCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Mswipe APKKit");
+        builder.setMessage(error);
+        builder.setPositiveButton("ok", null);
+        builder.create().show();
+    }
+
+    @Override
+    public void onMswipeAppInstalled() {
+
+    }
+
+    @Override
+    public void onMswipeAppUpdated() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +84,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
         mNetworkConnectivityListener = new NetworkConnectivityListener();
         mNetworkConnectivityListener.startListening(this);
+        mWisePadController = WisePadController.sharedInstance(this, this);
+
     /*    smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
             @Override
             public void onSmsCatch(String message) {
@@ -211,6 +235,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mWisePadController = WisePadController.sharedInstance(this, this);
+
         try {
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         } catch (Exception e) {

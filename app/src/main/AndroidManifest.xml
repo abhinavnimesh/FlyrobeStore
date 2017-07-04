@@ -28,23 +28,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/Theme.Transparent">
-
-
-        </activity>
+            android:theme="@style/Theme.Transparent"></activity>
         <activity
             android:name=".SignUpActivity"
             android:theme="@style/Theme.Transparent" />
         <activity android:name=".BluetoothActivity" />
-        <activity android:name=".bluetooth.MainBluetoothActivity"
-            android:theme="@style/NoTitleDialog"/>
-        <activity android:name=".bluetooth.DeviceListActivity"
-            android:theme="@style/NoTitleDialog"/>
-        <activity android:name=".bluetooth.AndroidBluetooth"></activity>
+        <activity
+            android:name=".bluetooth.MainBluetoothActivity"
+            android:theme="@style/NoTitleDialog" />
+        <activity
+            android:name=".bluetooth.DeviceListActivity"
+            android:theme="@style/NoTitleDialog" />
+        <activity android:name=".bluetooth.AndroidBluetooth" />
+        <activity android:name=".DoneActivity"></activity>
     </application>
 
 </manifest>
