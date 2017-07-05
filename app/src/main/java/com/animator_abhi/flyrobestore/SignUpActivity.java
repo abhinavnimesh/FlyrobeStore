@@ -387,7 +387,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     private boolean validatePhoneNumber() {
         if (userId.getText().toString().equals("")||userEmail.getText().toString().equals("")
             ||userMob.getText().toString().equals("")||userName.getText().toString().equals("")||citySpinner.getSelectedItemPosition()==0||storeIdSpinner.getSelectedItemPosition()==0) {
-        showMsgDialog("Warning!", "Fields cannot Be Empty", R.drawable.button, 0);
+        showMsgDialog("Warning!", "Fields cannot Be Empty", R.drawable.error_small, 0);
             return false;
     }
             return true;
@@ -404,7 +404,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                             // Sign in success, update UI with the signed-in user's information
                             isUserLoggedIn=true;
                             Log.d("signup", "signInWithCredential:success");
-                             showMsgDialog("Sign Up Completed","You can Login",R.drawable.success,1);
+                             showMsgDialog("Sign Up Completed","",R.drawable.success,1);
                             UserModel userModel = new UserModel( userId.getText().toString(),userMob.getText().toString(), userName.getText().toString(),userEmail.getText().toString(), citySpinner.getSelectedItem().toString(), storeIdSpinner.getSelectedItem().toString());
                             firebase.setValue(userModel);
                             Prefs.setUserId(getApplication(), userModel.getUserId());
