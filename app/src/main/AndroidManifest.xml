@@ -31,7 +31,7 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/Theme.Transparent"></activity>
+            android:theme="@style/Theme.Transparent" />
         <activity
             android:name=".SignUpActivity"
             android:theme="@style/Theme.Transparent" />
@@ -43,7 +43,8 @@
             android:name=".bluetooth.DeviceListActivity"
             android:theme="@style/NoTitleDialog" />
         <activity android:name=".bluetooth.AndroidBluetooth" />
-        <activity android:name=".DoneActivity"></activity>
+        <activity android:name=".DoneActivity" />
+        <activity android:name=".HistoryActivity"></activity>
     </application>
 
 </manifest>

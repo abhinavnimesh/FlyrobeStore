@@ -102,6 +102,8 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
                 // for instance if the the phone number format is not valid.
                 Log.w(TAG, "onVerificationFailed", e);
                 // [START_EXCLUDE silent]
+                mProgressBar.setVisibility(View.INVISIBLE);
+
                 mVerificationInProgress = false;
                 // [END_EXCLUDE]
 
@@ -135,6 +137,7 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
                 mResendToken = token;
+                mProgressBar.setVisibility(View.INVISIBLE);
                 signUp.setVisibility(View.GONE);
                 //userId.setVisibility(View.GONE);
                 signIn.setVisibility(View.GONE);
@@ -288,7 +291,7 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
                    // showMsgDialog("Warning!", "User Does Exist", R.drawable.error_small, 0);
                     try {
                         isUserExist=true;
-                        startPhoneNumberVerification(userId.getText().toString());
+                        startPhoneNumberVerification("+91"+userId.getText().toString());
                       /*  UserModel userModel=dataSnapshot.getValue(UserModel.class);
                         // Map<String, String> hashMap = snapshot.getValue(HashMap.class);
                         Prefs.setUserId(getApplication(), userModel.getUserId());
@@ -306,6 +309,7 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
                 }
                 else {
                     isUserExist=false;
+                    mProgressBar.setVisibility(View.INVISIBLE);
                     showMsgDialog("Warning!", "User Does not Exist", R.drawable.error_small, 0);
                 }
             }
@@ -356,6 +360,7 @@ private boolean validatePhoneNumber() {
                 if (!validatePhoneNumber()) {
                     return;
                 }
+                mProgressBar.setVisibility(View.VISIBLE);
 
                checkUser(userId.getText().toString());
 
@@ -428,6 +433,7 @@ private boolean validatePhoneNumber() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            mProgressBar.setVisibility(View.INVISIBLE);
                             //currentUser=userMob.getText().toString();
                            // final DatabaseReference firebase = database.getReference().child("users").child(currentUser);
                             // Sign in success, update UI with the signed-in user's information
@@ -479,7 +485,7 @@ private boolean validatePhoneNumber() {
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
                                   //  Toast.makeText(getApplication(),"error while access",Toast.LENGTH_SHORT).show();
-
+                                    mProgressBar.setVisibility(View.INVISIBLE);
 
                                 }
                             });

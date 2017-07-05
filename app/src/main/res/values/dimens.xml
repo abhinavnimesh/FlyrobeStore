@@ -111,4 +111,7 @@
     <dimen name="appcompat_btn_height">56dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+
+    <dimen name="md_keylines">16dp</dimen>
+
 </resources>

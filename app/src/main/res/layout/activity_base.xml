@@ -34,6 +34,7 @@
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_gravity="center"
             android:visibility="visible"
             android:indeterminate="true" />
@@ -42,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="loading..."
-            android:visibility="visible"
+            android:visibility="gone"
+            android:textColor="@color/white"
             android:textStyle="italic"
             android:gravity="center"
             android:layout_gravity="center"/>

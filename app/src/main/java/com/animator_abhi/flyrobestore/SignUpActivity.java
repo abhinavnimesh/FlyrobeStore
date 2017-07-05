@@ -2,12 +2,11 @@ package com.animator_abhi.flyrobestore;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,15 +34,15 @@ import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
 import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener{
     final static String TAG="SignUpActivity";
-    String[] city=new String[]{"City1","city2","city3","city4","city5"};
-    String[] warehouse=new String[]{"Store1","Store2","Store3","Store4","Store5",};
+    String[] city=new String[]{"Select City","Delhi","Mumbai"};
+    String[] storeDelhi =new String[]{"Select Store","Rajouri Store","Shapurjat Store"};
+    String[] storeMumbai =new String[]{"Select Store","Santacruz Store"};
+    String[] store =new String[]{"Select Store"};
+
     private FirebaseDatabase database;
     FirebaseAuth mAuth;
     SmsVerifyCatcher smsVerifyCatcher;
@@ -97,14 +96,42 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         mVerificationField=(EditText) findViewById(R.id.otp);
     }
 
+    private ArrayAdapter<String> initSpinner(String[] store)
+    {
+        ArrayAdapter<String> adapter2 =  new ArrayAdapter<String>(this,
+                R.layout.spinner_text, store);
+        return adapter2;
+    }
+
     @Override
     protected void initData() {
         ArrayAdapter<String> adapter1 =  new ArrayAdapter<String>(this,
                 R.layout.spinner_text, city);
-        ArrayAdapter<String> adapter2 =  new ArrayAdapter<String>(this,
-                R.layout.spinner_text, warehouse);
+
         citySpinner.setAdapter(adapter1);
-        storeIdSpinner.setAdapter(adapter2);
+        storeIdSpinner.setAdapter(initSpinner(store));
+       // getSpinnerData();
+
+     citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+         @Override
+         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+             switch(position){
+                 case 1:
+                     storeIdSpinner.setAdapter(initSpinner(storeDelhi));
+                     break;
+                 case 2:
+                     storeIdSpinner.setAdapter(initSpinner(storeMumbai));
+                     break;
+             }
+         }
+
+         @Override
+         public void onNothingSelected(AdapterView<?> parent) {
+
+         }
+     });
+
         signUp.setOnClickListener(this);
         verify.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
@@ -180,6 +207,28 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             }
         };
 
+    }
+
+    private void getSpinnerData() {
+        final DatabaseReference firebase = database.getReference().child("city");
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                  //  Toast.makeText(SignUpActivity.this, ""+snapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
+                    for (DataSnapshot insnapshot : snapshot.getChildren()) {
+                        Toast.makeText(SignUpActivity.this, ""+insnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -313,7 +362,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                     return;
                 }
 
-                startPhoneNumberVerification(userMob.getText().toString());
+                startPhoneNumberVerification("+91"+userMob.getText().toString());
                 break;
             case R.id.verify:
                 String code = mVerificationField.getText().toString();

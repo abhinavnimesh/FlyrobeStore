@@ -43,6 +43,8 @@ public class Prefs {
         getPrefs(context).edit().putBoolean(IS_PERSISTENCE, value).commit();
     }
 */
+ public static void clearPrefs(Context context)
+ {getPrefs(context).edit().clear().apply();}
 
     @NonNull
     public static Boolean getLoginStatus(Context context) {

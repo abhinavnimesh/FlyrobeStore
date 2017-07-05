@@ -22,6 +22,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -31,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.animator_abhi.flyrobestore.utils.NetworkConnectivityListener;
+import com.animator_abhi.flyrobestore.utils.Prefs;
 import com.mswipe.wisepad.apkkit.WisePadController;
 import com.mswipe.wisepad.apkkit.WisePadControllerListener;
 import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
@@ -194,7 +197,10 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
                     startActivity(i);
                     finish();
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                } else {
+                } else if(btnFlag==3){
+
+                }
+                else{
                     finish();
                    /* if (setRefreshViewIntent != null) {
                         startActivity(setRefreshViewIntent);
@@ -326,4 +332,104 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
     protected boolean enableNoConnectionView() {
         return true;
     }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+
+        this.mMenu = menu;
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_base, menu);
+
+        MenuItem logoutItem = menu.findItem(R.id.action_logout);
+        if (logoutItem != null) {
+            View logoutActionView = logoutItem.getActionView();
+
+            logoutActionView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(BaseActivity.this);
+
+                    alertDialog.setTitle("Logout");
+                    alertDialog.setMessage("Are you sure you want to Logout?");
+
+                    alertDialog.setPositiveButton(
+                            "Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+
+                                    Log.d("##Logout", "logging...");
+                                    logout();
+
+                                }
+
+                            })
+                            .setNegativeButton("No",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    alertDialog.show();
+
+
+                }
+
+            });
+
+        }
+
+
+
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    public void logout() {
+
+
+
+        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(BaseActivity.this);
+
+        alertDialog.setTitle("Logout");
+        alertDialog.setMessage("Are you sure you want to Logout?");
+
+        alertDialog.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+                        Log.d("##Logout", "logging...");
+                       // logout();
+                       // Prefs.setLoginStatus(getApplication(), false);
+                        Prefs.clearPrefs(getApplication());
+                        Intent i = new Intent(getApplication(), LoginActivity.class);
+                        startActivity(i);
+                        finish();
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    }
+
+                })
+                .setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        alertDialog.show();
+
+
+    }
+
 }
