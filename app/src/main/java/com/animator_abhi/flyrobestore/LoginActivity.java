@@ -485,6 +485,7 @@ private boolean validatePhoneNumber() {
                             });
 
                             Intent in=new Intent(getApplication(),HomeActivity.class);
+                            in.putExtra("flag",2);
                          startActivity(in);
                            finish();
 

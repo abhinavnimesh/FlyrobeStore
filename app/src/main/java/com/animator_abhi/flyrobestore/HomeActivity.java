@@ -44,11 +44,13 @@ FirebaseAuth auth;
     @Override
     protected void initData() {
         auth=FirebaseAuth.getInstance();
-        Toast.makeText(this,"Welcome "+auth.getCurrentUser().getPhoneNumber(),Toast.LENGTH_SHORT).show();
         i=getIntent();
 int flg=i.getIntExtra("flag",0);
         if (flg==1){
             Toast.makeText(getApplication(),"Payment Successful",Toast.LENGTH_SHORT).show();}
+        if (flg==2)
+        {        Toast.makeText(this,"Welcome "+auth.getCurrentUser().getPhoneNumber(),Toast.LENGTH_SHORT).show();
+        }
       //  Toast.makeText(getApplication(),"creds"+ Prefs.getMasterId(getApplicationContext()),Toast.LENGTH_SHORT).show();
         findViewById(R.id.card).setOnClickListener(new View.OnClickListener() {
             @Override

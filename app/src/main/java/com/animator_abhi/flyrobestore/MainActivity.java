@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.animator_abhi.flyrobestore.Model.TransactionModel;
 import com.animator_abhi.flyrobestore.utils.Constants;
 import com.animator_abhi.flyrobestore.utils.Prefs;
+import com.animator_abhi.flyrobestore.utils.Utils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mswipe.wisepad.apkkit.WisePadController;
@@ -142,7 +143,7 @@ public class MainActivity extends BaseActivity {
             String tsi = data.getExtras().getString("TSI");
             TransactionModel transactionModel;
             transactionModel=new TransactionModel(creditAmount,customerName,phoneNo,email
-                    ,receipt,notes,Prefs.getUserId(MainActivity.this),Prefs.getUSERNAME(MainActivity.this),rrNo,authCode);
+                    ,receipt,notes,Prefs.getUserId(MainActivity.this),Prefs.getUSERNAME(MainActivity.this),rrNo,authCode, Utils.getCurrentTimeStamp());
             firebase.push().setValue(transactionModel);
           //  LogUtil.d("##CARD-REQUESTCODE", requestCode + "--" + resultCode);
 

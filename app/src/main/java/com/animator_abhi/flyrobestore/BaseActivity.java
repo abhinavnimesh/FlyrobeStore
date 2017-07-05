@@ -190,6 +190,7 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
                     myDialog.cancel();
                 } else if (btnFlag == 1) {
                     Intent i= new Intent(BaseActivity.this,HomeActivity.class);
+                    i.putExtra("flag",2);
                     startActivity(i);
                     finish();
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

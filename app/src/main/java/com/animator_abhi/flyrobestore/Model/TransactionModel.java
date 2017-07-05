@@ -7,8 +7,9 @@ package com.animator_abhi.flyrobestore.Model;
 public class TransactionModel {
    private String  creditAmount, phoneNo,customerName, receipt, email, notes, deviceId,userId;
     private String rrNo,authCode;
+    private double timestamp;
 
-    public TransactionModel(String creditAmount, String customerName,String phoneNo,  String email,String receipt, String notes, String deviceId, String userId,String rrNo,String authCode) {
+    public TransactionModel(String creditAmount, String customerName,String phoneNo,  String email,String receipt, String notes, String deviceId, String userId,String rrNo,String authCode,double timestamp) {
         this.creditAmount = creditAmount;
         this.phoneNo = phoneNo;
         this.customerName = customerName;
@@ -19,7 +20,18 @@ public class TransactionModel {
         this.userId = userId;
         this.rrNo=rrNo;
         this.authCode=authCode;
+        this.timestamp=timestamp;
     }
+
+
+    public double getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(double timestamp) {
+        this.timestamp = timestamp;
+    }
+
 
     public String getRrNo() {
         return rrNo;
