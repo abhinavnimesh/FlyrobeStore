@@ -9,14 +9,14 @@ public class TransactionModel {
     private String rrNo,authCode;
     private double timestamp;
 
-    public TransactionModel(String creditAmount, String customerName,String phoneNo,  String email,String receipt, String notes,  String userId,String rrNo,String authCode,double timestamp) {
+    public TransactionModel(String creditAmount, String customerName,String phoneNo,  String email,String receipt, String notes, String userId,String rrNo,String authCode,double timestamp) {
         this.creditAmount = creditAmount;
         this.phoneNo = phoneNo;
         this.customerName = customerName;
         this.receipt = receipt;
         this.email = email;
         this.notes = notes;
-      //  this.deviceId = deviceId;
+        //this.deviceId = deviceId;
         this.userId = userId;
         this.rrNo=rrNo;
         this.authCode=authCode;
