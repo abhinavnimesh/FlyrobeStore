@@ -83,6 +83,7 @@ public class MainBluetoothActivity extends Activity {
 		if (mBluetoothAdapter == null) {
 			showUnsupported();
 		} else {
+            //getPairedDevices();
               if(getPairedDevices()) {
                   Intent i=new Intent(this, MainActivity.class);
                   startActivity(i);

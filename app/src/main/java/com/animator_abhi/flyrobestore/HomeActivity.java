@@ -70,7 +70,8 @@ int flg=i.getIntExtra("flag",0);
                 if(setBluetooth(true)){
 
                 Intent i=new Intent(getApplication(),MainBluetoothActivity.class);
-                startActivity(i);}
+                startActivity(i);
+                }
             }
         });
 

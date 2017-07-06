@@ -122,6 +122,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
          public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
              if (position!=0)
              initStoreSpinner(citySpinner.getSelectedItem().toString());
+             else
+                 storeIdSpinner.setAdapter(initSpinner(store));
 
             /* switch(position){
                  case 1:
