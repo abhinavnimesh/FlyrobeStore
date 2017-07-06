@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity {
             String tsi = data.getExtras().getString("TSI");
             TransactionModel transactionModel;
             transactionModel=new TransactionModel(creditAmount,customerName,phoneNo,email
-                    ,receipt,notes,Prefs.getUserId(MainActivity.this),Prefs.getUSERNAME(MainActivity.this),rrNo,authCode, Utils.getCurrentTimeStamp());
+                    ,receipt,notes,Prefs.getUSERNAME(MainActivity.this),rrNo,authCode, Utils.getCurrentTimeStamp());
             firebase.push().setValue(transactionModel);
           //  LogUtil.d("##CARD-REQUESTCODE", requestCode + "--" + resultCode);
 
@@ -170,7 +170,8 @@ public class MainActivity extends BaseActivity {
            // LogUtil.d("##CARD-REQUESTCODE", requestCode + "--" + resultCode);
             if (data != null && data.hasExtra("errMsg")) {
 
-                Constants.mshowDialog(MainActivity.this, Constants.CARDSALE_DIALOG_MSG, data.getExtras().getString("errMsg"), 1);
+                //Constants.mshowDialog(MainActivity.this, Constants.CARDSALE_DIALOG_MSG, data.getExtras().getString("errMsg"), 1);
+                showMsgDialog(Constants.CARDSALE_DIALOG_MSG,data.getExtras().getString("errMsg"),R.drawable.error_small,3);
 
             }
         }

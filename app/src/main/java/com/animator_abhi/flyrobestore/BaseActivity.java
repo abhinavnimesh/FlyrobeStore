@@ -88,6 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
         mNetworkConnectivityListener = new NetworkConnectivityListener();
         mNetworkConnectivityListener.startListening(this);
         mWisePadController = WisePadController.sharedInstance(this, this);
+        //ActivityCompat.requestPermissions(this,PERMISSIONS_STORAGE,REQUEST_PERMISSION);
 
     /*    smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
             @Override
@@ -150,6 +151,7 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
 
         initViews();
         initData();
+        addPermission();
     }
 
 
@@ -185,6 +187,10 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
             ok.setText("Cancel");
         }
 
+        if (btnFlag == 3) {
+            ok.setText("Ok");
+        }
+
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,6 +204,7 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
                     finish();
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 } else if(btnFlag==3){
+                    myDialog.cancel();
 
                 }
                 else{
