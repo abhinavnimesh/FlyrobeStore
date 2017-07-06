@@ -165,6 +165,8 @@ public class MainBluetoothActivity extends Activity {
 
         if (pairedDevices == null || pairedDevices.size() == 0) {
             showToast("No Paired Devices Found");
+            isPaired=false;
+            return isPaired;
             //bluetoothLayout.setVisibility(View.VISIBLE);
         } else {
 
@@ -187,8 +189,9 @@ public class MainBluetoothActivity extends Activity {
             //intent.putParcelableArrayListExtra("device.list", list);
 
            // startActivity(intent);
+            return isPaired;
         }
-        return isPaired;
+
     }
 	private void showEnabled() {
 		mStatusTv.setText("Bluetooth is On");
