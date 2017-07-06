@@ -1,5 +1,7 @@
 package com.animator_abhi.flyrobestore;
 
+import android.*;
+import android.Manifest;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -10,7 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import com.animator_abhi.flyrobestore.bluetooth.AndroidBluetooth;
 import com.animator_abhi.flyrobestore.bluetooth.MainBluetoothActivity;
 import com.animator_abhi.flyrobestore.utils.Constants;
@@ -49,6 +52,7 @@ FirebaseAuth auth;
 
     @Override
     protected void initData() {
+
         auth=FirebaseAuth.getInstance();
         i=getIntent();
 int flg=i.getIntExtra("flag",0);
@@ -63,10 +67,10 @@ int flg=i.getIntExtra("flag",0);
         findViewById(R.id.card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setBluetooth(true);
+                if(setBluetooth(true)){
 
-                Intent i=new Intent(getApplication(),MainActivity.class);
-                startActivity(i);
+                Intent i=new Intent(getApplication(),MainBluetoothActivity.class);
+                startActivity(i);}
             }
         });
 

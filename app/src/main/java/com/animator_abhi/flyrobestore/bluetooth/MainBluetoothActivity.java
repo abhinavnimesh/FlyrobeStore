@@ -19,12 +19,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 
+import com.animator_abhi.flyrobestore.MainActivity;
 import com.animator_abhi.flyrobestore.R;
 
 /**
@@ -38,6 +41,10 @@ public class MainBluetoothActivity extends Activity {
 	private Button mActivateBtn;
 	private Button mPairedBtn;
 	private Button mScanBtn;
+    public static ImageView mImageView;
+    public  static    TextView mError;
+    private static boolean isPaired=false;
+    public  static LinearLayout bluetoothLayout;
 	
 	private ProgressDialog mProgressDlg;
 	
@@ -51,15 +58,16 @@ public class MainBluetoothActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_bluetooth_main);
-		
-		mStatusTv 			= (TextView) findViewById(R.id.tv_status);
+        bluetoothLayout = (LinearLayout) findViewById(R.id.bluetoothLayout);
+
+        mStatusTv 			= (TextView) findViewById(R.id.tv_status);
 		mActivateBtn 		= (Button) findViewById(R.id.btn_enable);
 		mPairedBtn 			= (Button) findViewById(R.id.btn_view_paired);
 		mScanBtn 			= (Button) findViewById(R.id.btn_scan);
-		
-		mBluetoothAdapter	= BluetoothAdapter.getDefaultAdapter();
-		
-		mProgressDlg 		= new ProgressDialog(this);
+		mImageView= (ImageView) findViewById(R.id.imageView2);
+        mBluetoothAdapter	= BluetoothAdapter.getDefaultAdapter();
+		mError= (TextView) findViewById(R.id.tv_error);
+        mProgressDlg 		= new ProgressDialog(this);
 		
 		mProgressDlg.setMessage("Scanning...");
 		mProgressDlg.setCancelable(false);
@@ -75,31 +83,30 @@ public class MainBluetoothActivity extends Activity {
 		if (mBluetoothAdapter == null) {
 			showUnsupported();
 		} else {
+              if(getPairedDevices()) {
+                  Intent i=new Intent(this, MainActivity.class);
+                  startActivity(i);
+                  finish();
+              }
+              else
+              {
+                  bluetoothLayout.setVisibility(View.VISIBLE);
+                  mBluetoothAdapter.startDiscovery();
+              }
+
 			mPairedBtn.setOnClickListener(new View.OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-					
-					if (pairedDevices == null || pairedDevices.size() == 0) { 
-						showToast("No Paired Devices Found");
-					} else {
-						ArrayList<BluetoothDevice> list = new ArrayList<BluetoothDevice>();
-						
-						list.addAll(pairedDevices);
-						
-						Intent intent = new Intent(getApplication(), DeviceListActivity.class);
-						
-						intent.putParcelableArrayListExtra("device.list", list);
-						
-						startActivity(intent);						
-					}
+                    getPairedDevices();
+
 				}
 			});
 			
 			mScanBtn.setOnClickListener(new View.OnClickListener() {				
 				@Override
 				public void onClick(View arg0) {
-					mBluetoothAdapter.startDiscovery();
+
+                    mBluetoothAdapter.startDiscovery();
 				}
 			});
 			
@@ -152,7 +159,37 @@ public class MainBluetoothActivity extends Activity {
 		
 		super.onDestroy();
 	}
-	
+
+	private boolean getPairedDevices(){
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+        if (pairedDevices == null || pairedDevices.size() == 0) {
+            showToast("No Paired Devices Found");
+            //bluetoothLayout.setVisibility(View.VISIBLE);
+        } else {
+
+            ArrayList<BluetoothDevice> list = new ArrayList<BluetoothDevice>();
+
+            list.addAll(pairedDevices);
+            for (BluetoothDevice device : pairedDevices) {
+                if (device.getName().substring(0,2).equals("WP")){
+                    isPaired=true;
+                   // Toast.makeText(MainBluetoothActivity.this, ""+device.getName(), Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+                // Add the name and address to an array adapter to show in a ListView
+                // mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+            }
+
+           // Intent intent = new Intent(getApplication(), DeviceListActivity.class);
+
+            //intent.putParcelableArrayListExtra("device.list", list);
+
+           // startActivity(intent);
+        }
+        return isPaired;
+    }
 	private void showEnabled() {
 		mStatusTv.setText("Bluetooth is On");
 
@@ -165,7 +202,7 @@ public class MainBluetoothActivity extends Activity {
 	
 	private void showDisabled() {
 		mStatusTv.setText("Bluetooth is Off");
-		mStatusTv.setTextColor(Color.RED);
+		//mStatusTv.setTextColor(Color.RED);
 		
 		mActivateBtn.setText("Enable");
 		mActivateBtn.setEnabled(true);
@@ -197,32 +234,42 @@ public class MainBluetoothActivity extends Activity {
 	        	final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 	        	 
 	        	if (state == BluetoothAdapter.STATE_ON) {
-	        		showToast("Enabled");
+	        		//showToast("Enabled");
 	        		 
 	        		showEnabled();
 	        	 }
 	        } else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
 	        	//mDeviceList = new ArrayList<BluetoothDevice>();
                 mHashDeviceList=new HashSet<BluetoothDevice>();
-				
+                bluetoothLayout.setVisibility(View.GONE);
 				mProgressDlg.show();
 	        } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
 	        	mProgressDlg.dismiss();
-	        	
-	        	Intent newIntent = new Intent(getApplication(), DeviceListActivity.class);
-	        	mDeviceList=new ArrayList<BluetoothDevice>(mHashDeviceList);
-	        	newIntent.putParcelableArrayListExtra("device.list", mDeviceList);
-
-				
-				startActivity(newIntent);
+                Intent newIntent = new Intent(getApplication(), DeviceListActivity.class);
+                mDeviceList=new ArrayList<BluetoothDevice>(mHashDeviceList);
+                newIntent.putParcelableArrayListExtra("device.list", mDeviceList);
+                if(mDeviceList.isEmpty()){
+                    bluetoothLayout.setVisibility(View.VISIBLE);
+                    mImageView.setImageResource(R.drawable.error_small);
+                    mError.setVisibility(View.VISIBLE);
+                    mError.setText(R.string.error_bluetoothNotFound);
+                }
+	        	else {
+                    mImageView.setImageResource(R.drawable.bluetooth_icon);
+                    mError.setVisibility(View.GONE);
+				startActivity(newIntent);}
 	        } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 	        	BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (device.getName().substring(0,2).equals("WP")) {
+                try{
+              if ((device.getName().substring(0,2)+"").equals("WP")) {
                     mHashDeviceList.add(device);
-                    //mDeviceList.add(device);
-                }
-                mHashDeviceList.add(device);
-                Toast.makeText(getApplication(),""+device.getName().substring(0,2),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplication(),""+device.getName().substring(0,2),Toast.LENGTH_SHORT).show();
+                    mDeviceList.add(device);
+                }}
+                catch (Exception e)
+                {}
+              //  mHashDeviceList.add(device);
+
                 Log.d("devices","Found device " + device.getName());
 	        }
 	    }

@@ -30,24 +30,29 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.stfalcon.smsverifycatcher.OnSmsCatchListener;
 import com.stfalcon.smsverifycatcher.SmsVerifyCatcher;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener{
     final static String TAG="SignUpActivity";
-    String[] city=new String[]{"Select City","Delhi","Mumbai"};
-    String[] storeDelhi =new String[]{"Select Store","Rajouri Store","Shapurjat Store"};
-    String[] storeMumbai =new String[]{"Select Store","Santacruz Store"};
+    String[] city=new String[]{"Select City","Delhi","Mumbai","etc"};
+
     String[] store =new String[]{"Select Store"};
 
     private FirebaseDatabase database;
     FirebaseAuth mAuth;
     SmsVerifyCatcher smsVerifyCatcher;
 
+
     String currentUser;
+  public DataSnapshot storeDataFirebase;
    Button signUp;
     Button verify;
    Boolean isUserExist=false;
@@ -110,20 +115,23 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
         citySpinner.setAdapter(adapter1);
         storeIdSpinner.setAdapter(initSpinner(store));
-       // getSpinnerData();
+
 
      citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
          @Override
          public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+             if (position!=0)
+             initStoreSpinner(citySpinner.getSelectedItem().toString());
 
-             switch(position){
+            /* switch(position){
                  case 1:
-                     storeIdSpinner.setAdapter(initSpinner(storeDelhi));
+                   //  storeIdSpinner.setAdapter(initSpinner(storeDelhi));
+                     //initSpinner(view.getId(position));
                      break;
                  case 2:
-                     storeIdSpinner.setAdapter(initSpinner(storeMumbai));
+                    // storeIdSpinner.setAdapter(initSpinner(storeMumbai));
                      break;
-             }
+             }*/
          }
 
          @Override
@@ -131,6 +139,9 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
          }
      });
+        getSpinnerData();
+
+
 
         signUp.setOnClickListener(this);
         verify.setOnClickListener(this);
@@ -209,18 +220,82 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
     }
 
+    private void initStoreSpinner(String city) {
+        ArrayList<String> storeList=new ArrayList<String>();
+        storeList.add("Select Store");
+        for (DataSnapshot snapshot : storeDataFirebase.getChildren()){
+            if (snapshot.getKey().equals(city))
+            for (DataSnapshot inSnapshot : snapshot.getChildren()){
+
+                storeList.add(inSnapshot.getValue().toString());
+
+                //cityList.add(snapshot.getKey().toString());
+
+            }
+
+            //cityList.add(snapshot.getKey().toString());
+
+        }
+        ArrayAdapter<String> adapter2 =  new ArrayAdapter<String>(getApplication(),
+                R.layout.spinner_text, storeList);
+        storeIdSpinner.setAdapter(adapter2);
+
+    }
+
+    private void initCitySpinner(DataSnapshot storeDataFirebase) {
+        ArrayList<String> cityList=new ArrayList<String>();
+        cityList.add("Select City");
+        for (DataSnapshot snapshot : storeDataFirebase.getChildren()){
+
+            cityList.add(snapshot.getKey().toString());
+
+        }
+        ArrayAdapter<String> adapter2 =  new ArrayAdapter<String>(getApplication(),
+                R.layout.spinner_text, cityList);
+        citySpinner.setAdapter(adapter2);
+      //  Toast.makeText(getApplication(),snapshot.getKey().toString()+"",Toast.LENGTH_SHORT).show();
+
+       /* for (DataSnapshot snapshot : storeDataFirebase.getChildren()) {
+            Toast.makeText(getApplication(),snapshot.getValue().toString()+"",Toast.LENGTH_SHORT).show();
+
+        }*/
+
+    }
+
+
+
     private void getSpinnerData() {
+
         final DatabaseReference firebase = database.getReference().child("city");
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            ArrayList<String> storeList;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                storeDataFirebase=dataSnapshot;
+                initCitySpinner(storeDataFirebase);
+                //initStoreSpinner();
+              //  storeDataFirebase=dataSnapshot.getValue(JsonArray.class);
+               // Toast.makeText(SignUpActivity.this, ""+storeDataFirebase.toString(), Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(SignUpActivity.this, ""+storeDataFirebase.toString(), Toast.LENGTH_SHORT).show();
+
+               /* for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    storeList = new ArrayList<String>();
                   //  Toast.makeText(SignUpActivity.this, ""+snapshot.getKey().toString(), Toast.LENGTH_SHORT).show();
                     for (DataSnapshot insnapshot : snapshot.getChildren()) {
+                       // List<DataSnapshot> l=new ArrayList<DataSnapshot>();
+                    //    l.add(insnapshot);
+                     //   String[] storeData;
+
+                        storeList.add(insnapshot.getValue().toString());
                         Toast.makeText(SignUpActivity.this, ""+insnapshot.getValue().toString(), Toast.LENGTH_SHORT).show();
 
+
                     }
-                }
+                    ArrayAdapter<String> adapter2 =  new ArrayAdapter<String>(getApplication(),
+                            R.layout.spinner_text, storeList);
+                    storeIdSpinner.setAdapter(adapter2);
+
+                }*/
 
             }
 

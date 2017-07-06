@@ -5,6 +5,8 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:paddingTop="8dp"
+    android:id="@+id/bluetoothLayout"
+    android:visibility="gone"
     >
 
     <TextView
@@ -26,6 +28,17 @@
         android:layout_gravity="center"
         android:layout_marginTop="8dp"
         android:src="@drawable/bluetooth_icon" />
+
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:visibility="visible"
+        android:textColor="@color/bold_font"
+        android:text="@string/error_bluetoothNotPaired"
+        android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +67,7 @@
             android:layout_marginBottom="7dp"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:enabled="false"
-            android:visibility="visible"
+            android:visibility="gone"
             android:text="Show"
             android:background="@drawable/edit_text_round_border"
             android:textColor="@color/theme_blue"
@@ -65,14 +78,14 @@
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="7dp"
-android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+
             android:visibility="visible"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginTop="8dp"
             android:background="@drawable/edit_text_round_border"
 
             android:enabled="false"
-            android:text="Scan Device"
+            android:text="Search"
             android:textColor="@color/theme_blue"
             android:textStyle="bold" />
     </LinearLayout>

@@ -43,6 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
     public ViewGroup mContentContainer;
     public TextView mTitleTextView;
     public ViewGroup mFrameHeader;
+
     public ViewGroup mProgressBar;
     public ViewGroup contentLayout;
     private Intent setRefreshViewIntent;
@@ -88,6 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
         mNetworkConnectivityListener = new NetworkConnectivityListener();
         mNetworkConnectivityListener.startListening(this);
         mWisePadController = WisePadController.sharedInstance(this, this);
+        //ActivityCompat.requestPermissions(this,PERMISSIONS_STORAGE,REQUEST_PERMISSION);
 
     /*    smsVerifyCatcher = new SmsVerifyCatcher(this, new OnSmsCatchListener<String>() {
             @Override
@@ -150,6 +152,7 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
 
         initViews();
         initData();
+        addPermission();
     }
 
 
