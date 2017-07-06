@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -29,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
     public ViewGroup mFrameHeader;
 
     public ViewGroup mProgressBar;
+    public ProgressBar pb;
     public ViewGroup contentLayout;
     private Intent setRefreshViewIntent;
     private Menu mMenu;
@@ -111,6 +114,8 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
 
          mContentContainer=(ViewGroup)findViewById(R.id.content_frame_layout);
         mProgressBar = (ViewGroup) findViewById(R.id.progress_layout);
+        pb= (ProgressBar) findViewById(R.id.progress);
+        pb.getIndeterminateDrawable().setColorFilter(Color.parseColor("#ffffff"), android.graphics.PorterDuff.Mode.SRC_ATOP);
         contentLayout = (ViewGroup) findViewById(R.id.content_layout);
 
         if (getLayoutId() != 0 && getLayoutId() != -1) {

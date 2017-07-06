@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class HomeActivity extends BaseActivity {
     Intent i;
     private String mSwipeId,
             mSwipePassword;
+    private static Boolean isBluetoothEnable=false;
 FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ FirebaseAuth auth;
 
     @Override
     protected void initData() {
+        mbluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         auth=FirebaseAuth.getInstance();
         i=getIntent();
@@ -67,11 +70,25 @@ int flg=i.getIntExtra("flag",0);
         findViewById(R.id.card).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(setBluetooth(true)){
+                if(BluetoothAdapter.getDefaultAdapter().isEnabled())
+                {
+                    Intent i=new Intent(getApplication(),MainBluetoothActivity.class);
+                    startActivity(i);}
+                else {
+                    setBluetooth(true);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // displayData();
+                            if (BluetoothAdapter.getDefaultAdapter().isEnabled()) {
 
-                Intent i=new Intent(getApplication(),MainBluetoothActivity.class);
-                startActivity(i);
+                                Intent i = new Intent(getApplication(), MainBluetoothActivity.class);
+                                startActivity(i);
+                            }
+                        }
+                    }, 2000);
                 }
+
             }
         });
 
@@ -106,13 +123,17 @@ int flg=i.getIntExtra("flag",0);
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         boolean isEnabled = bluetoothAdapter.isEnabled();
         if (enable && !isEnabled) {
-            return bluetoothAdapter.enable();
+            isBluetoothEnable=true;
+            bluetoothAdapter.enable();
+            return true;
         }
-        else if(!enable && isEnabled) {
+        else
+
+            /*if(!enable && isEnabled) {
             return bluetoothAdapter.disable();
-        }
+        }*/
         // No need to change bluetooth state
-        return true;
+        return false;
     }
 
 

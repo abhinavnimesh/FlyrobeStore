@@ -62,7 +62,8 @@ public class DeviceListActivity extends Activity {
 					finish();
 				}
 				else
-				{
+				{   	/*Intent i = new Intent(getApplication(), MainBluetoothActivity.class);
+                    startActivity(i);*/
 					Toast.makeText(DeviceListActivity.this,"Not Paired With MSwipe Device",Toast.LENGTH_SHORT).show();
 					finish();
 					MainBluetoothActivity.mError.setVisibility(View.VISIBLE);

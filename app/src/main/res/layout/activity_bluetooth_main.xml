@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:paddingTop="8dp"
     android:id="@+id/bluetoothLayout"
-    android:visibility="gone"
+    android:visibility="visible"
     >
 
     <TextView

@@ -309,6 +309,8 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
                 }
                 else {
                     isUserExist=false;
+                    contentLayout.setVisibility(View.VISIBLE);
+
                     mProgressBar.setVisibility(View.INVISIBLE);
                     showMsgDialog("Warning!", "User Does not Exist", R.drawable.error_small, 0);
                 }
@@ -360,6 +362,7 @@ private boolean validatePhoneNumber() {
                 if (!validatePhoneNumber()) {
                     return;
                 }
+              //  contentLayout.setVisibility(View.INVISIBLE);
                 mProgressBar.setVisibility(View.VISIBLE);
 
                checkUser(userId.getText().toString());
@@ -433,6 +436,8 @@ private boolean validatePhoneNumber() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                           // contentLayout.setVisibility(View.VISIBLE);
+
                             mProgressBar.setVisibility(View.INVISIBLE);
                             //currentUser=userMob.getText().toString();
                            // final DatabaseReference firebase = database.getReference().child("users").child(currentUser);
@@ -485,6 +490,8 @@ private boolean validatePhoneNumber() {
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
                                   //  Toast.makeText(getApplication(),"error while access",Toast.LENGTH_SHORT).show();
+
+                                  //  contentLayout.setVisibility(View.VISIBLE);
                                     mProgressBar.setVisibility(View.INVISIBLE);
 
                                 }

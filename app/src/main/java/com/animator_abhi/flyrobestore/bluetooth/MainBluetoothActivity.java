@@ -107,6 +107,7 @@ public class MainBluetoothActivity extends Activity {
 				@Override
 				public void onClick(View arg0) {
 
+                  //  bluetoothLayout.setVisibility(View.GONE);
                     mBluetoothAdapter.startDiscovery();
 				}
 			});
@@ -245,7 +246,7 @@ public class MainBluetoothActivity extends Activity {
 	        } else if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
 	        	//mDeviceList = new ArrayList<BluetoothDevice>();
                 mHashDeviceList=new HashSet<BluetoothDevice>();
-                bluetoothLayout.setVisibility(View.GONE);
+              //  bluetoothLayout.setVisibility(View.GONE);
 				mProgressDlg.show();
 	        } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
 	        	mProgressDlg.dismiss();
@@ -261,7 +262,9 @@ public class MainBluetoothActivity extends Activity {
 	        	else {
                     mImageView.setImageResource(R.drawable.bluetooth_icon);
                     mError.setVisibility(View.GONE);
-				startActivity(newIntent);}
+				startActivity(newIntent);
+	        	//finish();
+	        	}
 	        } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 	        	BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 try{
