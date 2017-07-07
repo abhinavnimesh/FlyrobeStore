@@ -1,8 +1,10 @@
 package com.animator_abhi.flyrobestore;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.animator_abhi.flyrobestore.Model.UserModel;
@@ -49,6 +52,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     private FirebaseDatabase database;
     FirebaseAuth mAuth;
     SmsVerifyCatcher smsVerifyCatcher;
+    TextInputLayout textInputLayoutId,textInputLayoutName,textInputLayoutMob,textInputLayoutEmail;
 
 
     String currentUser;
@@ -99,6 +103,11 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
         verify= (Button) findViewById(R.id.verify);
         userEmail=(EditText) findViewById(R.id.email);
         mVerificationField=(EditText) findViewById(R.id.otp);
+        textInputLayoutId= (TextInputLayout) findViewById(R.id.textInputLayout1);
+        textInputLayoutName= (TextInputLayout) findViewById(R.id.textInputLayout2);
+        textInputLayoutMob= (TextInputLayout) findViewById(R.id.textInputLayout3);
+        textInputLayoutEmail= (TextInputLayout) findViewById(R.id.textInputLayout4);
+
     }
 
     private ArrayAdapter<String> initSpinner(String[] store)
@@ -448,9 +457,15 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
             case R.id.verify:
                 String code = mVerificationField.getText().toString();
                 if (TextUtils.isEmpty(code)) {
-                    mVerificationField.setError("Cannot be empty.");
+                    mVerificationField.setError("Cannot be empty!");
+                    mVerificationField.requestFocus();
                     return;
                 }
+                if (code.length()!=6) {
+                    mVerificationField.setError("Enter 6 Digit OTP!");
+                    mVerificationField.requestFocus();
+
+                    return;}
 
                 verifyPhoneNumberWithCode(mVerificationId, code);
                 break;
@@ -466,11 +481,60 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     }
 
     private boolean validatePhoneNumber() {
-        if (userId.getText().toString().equals("")||userEmail.getText().toString().equals("")
-            ||userMob.getText().toString().equals("")||userName.getText().toString().equals("")||citySpinner.getSelectedItemPosition()==0||storeIdSpinner.getSelectedItemPosition()==0) {
+        if(userId.getText().toString().equals(""))
+        {//userId.setError("UserID Cannot Be Empty!");
+            userId.setError("UserID Cannot Be Empty!");
+            userId.requestFocus();
+            return false;}
+
+        if(userName.getText().toString().equals(""))
+        {userName.setError("User Name Cannot Be Empty!");
+            userName.requestFocus();
+            return false;}
+        if(userMob.getText().toString().length()!=10)
+        {userMob.setError("Enter Valid Number!");
+            userMob.requestFocus();
+            return false;}
+        if(userEmail.getText().toString().equals(""))
+        {userEmail.setError("Email Cannot Be Empty!");
+            userEmail.requestFocus();
+            return false;}
+        if(android.util.Patterns.EMAIL_ADDRESS.matcher(userEmail.getText().toString()).matches()!=true)
+        {userEmail.setError("Enter Valid Email!");
+            userEmail.requestFocus();
+            return false;}
+
+
+
+
+        if(citySpinner.getSelectedItemPosition()==0)
+        {
+            TextView errorText = (TextView)citySpinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Select City");
+            return false;
+
+        }
+        if(storeIdSpinner.getSelectedItemPosition()==0)
+        {
+            TextView errorText = (TextView)storeIdSpinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText("Select Store");
+            return false;
+
+        }
+
+
+
+
+     /*   if (userId.getText().toString().equals("")||userEmail.getText().toString().equals("")
+            ||userMob.getText().toString().equals("")||userName.getText().toString().equals("")||citySpinner.getSelectedItemPosition()==0||storeIdSpinner.getSelectedItemPosition()==0)
+        {
         showMsgDialog("Warning!", "Fields cannot Be Empty", R.drawable.error_small, 0);
             return false;
-    }
+    }*/
             return true;
     }
 
@@ -535,6 +599,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                             // ...
                         } else {
                             // Sign in failed, display a message and update the UI
+                            showMsgDialog("Sign Up Failed","Invalid OTP",R.drawable.error_small,4);
                             Log.w("signup", "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid

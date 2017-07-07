@@ -196,6 +196,9 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
         if (btnFlag == 3) {
             ok.setText("Ok");
         }
+        if (btnFlag == 4) {
+            ok.setText("Ok");
+        }
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,6 +214,11 @@ public abstract class BaseActivity extends AppCompatActivity  implements WisePad
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 } else if(btnFlag==3){
                     myDialog.cancel();
+
+                }
+                else if(btnFlag==4){
+                    myDialog.cancel();
+                    finish();
 
                 }
                 else{
