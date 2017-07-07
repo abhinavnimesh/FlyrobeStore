@@ -309,7 +309,7 @@ public class LoginActivity extends BaseActivity implements /*VolleyWebserviceRes
                 }
                 else {
                     isUserExist=false;
-                    contentLayout.setVisibility(View.VISIBLE);
+                   // contentLayout.setVisibility(View.VISIBLE);
 
                     mProgressBar.setVisibility(View.INVISIBLE);
                     showMsgDialog("Warning!", "User Does not Exist", R.drawable.error_small, 0);

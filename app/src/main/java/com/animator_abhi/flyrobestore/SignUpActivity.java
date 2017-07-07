@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SignUpActivity extends BaseActivity implements View.OnClickListener{
     final static String TAG="SignUpActivity";
-    String[] city=new String[]{"Select City","Delhi","Mumbai","etc"};
+    String[] city=new String[]{"Select City","Delhi","Mumbai"};
 
     String[] store =new String[]{"Select Store"};
 
@@ -225,6 +225,8 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     private void initStoreSpinner(String city) {
         ArrayList<String> storeList=new ArrayList<String>();
         storeList.add("Select Store");
+        try
+        {
         for (DataSnapshot snapshot : storeDataFirebase.getChildren()){
             if (snapshot.getKey().equals(city))
             for (DataSnapshot inSnapshot : snapshot.getChildren()){
@@ -237,10 +239,12 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
             //cityList.add(snapshot.getKey().toString());
 
-        }
+        }}
+        catch (Exception e){}
+        if (storeList.size()>1){
         ArrayAdapter<String> adapter2 =  new ArrayAdapter<String>(getApplication(),
                 R.layout.spinner_text, storeList);
-        storeIdSpinner.setAdapter(adapter2);
+        storeIdSpinner.setAdapter(adapter2);}
 
     }
 
